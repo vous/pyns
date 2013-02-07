@@ -4,4 +4,4 @@ LICENSE.txt
 README.txt
 setup.py
 pyns\__init__.py
-pyns\wrapper.py
+pyns\api.py
