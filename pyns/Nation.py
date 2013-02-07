@@ -142,8 +142,6 @@ class Nation:
 			self.sensibilities = value
 		elif attribute == "govtpriority":
 			self.govtpriority = value
-		elif attribute == "govt":
-			self.govt = value
 		elif attribute == "govtdesc":
 			self.govtdesc = value
 		elif attribute == "industrydesc":
@@ -269,4 +267,101 @@ class Nation:
 		else:
 			pass
 		return returnVal
+
+	def getAttribute(self, attribute, autoget = True):
+		if attribute == "name":
+			value = self.name
+		elif attribute == "fullname":
+			value = self.fullname
+		elif attribute == "type":
+			value = self.type
+		elif attribute == "motto":
+			value = self.motto
+		elif attribute == "category":
+			value = self.category
+		elif attribute == "wa":
+			value = self.wa
+		elif attribute == "endorsements":
+			value = self.endorsements
+		elif attribute == "gavote":
+			value = self.gavote
+		elif attribute == "scvote":
+			value = self.scvote
+		elif attribute == "region":
+			value = self.region
+		elif attribute == "population":
+			value = self.population
+		elif attribute == "tax":
+			value = self.tax
+		elif attribute == "animal":
+			value = self.animal
+		elif attribute == "animaltrait":
+			value = self.animaltrait
+		elif attribute == "currency":
+			value = self.currency
+		elif attribute == "flag":
+			value = self.flag
+		elif attribute == "majorindustry":
+			value = self.majorindustry
+		elif attribute == "crime":
+			value = self.crime
+		elif attribute == "sensibilities":
+			value = self.sensibilities
+		elif attribute == "govtpriority":
+			value = self.govtpriority
+		elif attribute == "govt":
+			value = self.govt
+		elif attribute == "govtdesc":
+			value = self.govtdesc
+		elif attribute == "industrydesc":
+			value = self.industrydesc
+		elif attribute == "notable":
+			value = self.notable
+		elif attribute == "admirable":
+			value = self.admirable
+		elif attribute == "founded":
+			value = self.founded
+		elif attribute == "firstlogin":
+			value = self.firstlogin
+		elif attribute == "lastlogin":
+			value = self.lastlogin
+		elif attribute == "lastactivity":
+			value = self.lastactivity
+		elif attribute == "influence":
+			value = self.influence
+		elif attribute == "publicsector":
+			value = self.publicsector
+		elif attribute == "leader":
+			value = self.leader
+		elif attribute == "capital":
+			value = self.capital
+		elif attribute == "religion":
+			value = self.religion
+		elif attribute == "customleader":
+			value = self.customleader
+		elif attribute == "customcapital":
+			value = customcapital
+		elif attribute == "customreligion":
+			value = customreligion
+		elif attribute == "rcensus":
+			value = self.rcensus
+		elif attribute == "wcensus":
+			value = self.wcensus
+		elif attribute == "censusscore":
+			value = self.censusscore
+		elif attribute == "freedom":
+			value = self.freedom
+		elif attribute == "freedomscores":
+			value = self.freedomscores
+		elif attribute == "deaths":
+			value = self.death
+
+		if value == "" or value == 0 or value == None:
+			if autoget == True:
+				self.readAttribute(attribute)
+			else:
+				return None
+		return value
+
+
 			
