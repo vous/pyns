@@ -88,12 +88,15 @@ class Nation:
 		self.censusscoren = False ### To Do
 	
 	def getName(self):
+		"""Get nation name, can alternatively be done with nation.name"""
 		return self.name
 
 	def setName(self, name):
+		"""Set nation name"""
 		self.name = name
 
 	def setAttribute(self, attribute, value):
+		"""Given an attribute name, and a value, this function updates the nation instance's attribute."""
 		if attribute == "name":
 			self.name = value
 		elif attribute == "fullname":
@@ -176,6 +179,8 @@ class Nation:
 			self.censusscore = int(value)
 
 	def readAttribute(self, attribute, nation, autoset = True, debug = False):
+		"""This function takes an attribute and reads it from a link for a particular nation. Auto updating of the nation's value defaults to True, debugging defaults to False.
+		More complicated data to read, such as freedom scores, government budget breakdown, how the nation's freedom is and the breakdown of death rates have yet to be finished.""" 
 		baseUrl = "http://www.nationstates.net/cgi-bin/api.cgi?nation="
 		readUrl = baseUrl + "%s&q=%s" % (nation, attribute)
 		### Now do something to get the data
