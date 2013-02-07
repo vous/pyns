@@ -1,3 +1,6 @@
+import xml.etree.ElementTree as ET
+from mechanize import Browser
+
 """This will be the main file for the Nations API Wrapper"""
 class Freedom:
 	def __init__(self):
@@ -11,6 +14,20 @@ class FreedomScores:
 		self.economy = 0
 		self.politicalfreedom = 0
 
+class Government:
+	def __init__(self):
+		self.environment = 0
+		self.socialequality = 0
+		self.education = 0
+		self.lawandorder = 0
+		self.administration = 0
+		self.welfare = 0
+		self.spirituality = 0
+		self.defence = 0
+		self.publictransport = 0
+		self.healthcare = 0
+		self.commerce = 0
+
 class Deaths:
 	def __init__(self):
 		"""The respective percentages of the causes of death"""
@@ -18,7 +35,7 @@ class Deaths:
 		self.exposure = 0
 		self.capital = 0
 		self.murder = 0
-		sefl.heart = 0
+		self.heart = 0
 		self.age = 0
 
 class Nation:
@@ -44,7 +61,7 @@ class Nation:
 		self.crime = ""
 		self.sensibilities = ""
 		self.govtpriority = ""
-		self.govt = ""
+		self.govt = Government()
 		self.govtdesc = ""
 		self.industrydesc = ""
 		self.notable = ""
@@ -88,19 +105,19 @@ class Nation:
 		elif attribute == "category":
 			self.category = value
 		elif attribute == "wa":
-		self.wa = value
+			self.wa = value
 		elif attribute == "endorsements":
-			self.endorsements = value
-		elif attribute == "gavote	=":
-			self.gavote	= = value
+			self.endorsements = int(value)
+		elif attribute == "gavote":
+			self.gavote	== value
 		elif attribute == "scvote":
 			self.scvote = value
 		elif attribute == "region":
 			self.region = value
 		elif attribute == "population":
-			self.population = value
+			self.population = int(value)
 		elif attribute == "tax":
-			self.tax = value
+			self.tax = int(value)
 		elif attribute == "animal":
 			self.animal = value
 		elif attribute == "animaltrait":
@@ -128,17 +145,17 @@ class Nation:
 		elif attribute == "admirable":
 			self.admirable = value
 		elif attribute == "founded":
-			self.founded = value
+			self.founded = int(value)
 		elif attribute == "firstlogin":
-			self.firstlogin = value
+			self.firstlogin = int(value)
 		elif attribute == "lastlogin":
-			self.lastlogin = value
+			self.lastlogin = int(value)
 		elif attribute == "lastactivity":
-			self.lastactivity = value
+			self.lastactivity = int(value)
 		elif attribute == "influence":
 			self.influence = value
 		elif attribute == "publicsector":
-			self.publicsector = value
+			self.publicsector = int(value)
 		elif attribute == "leader":
 			self.leader = value
 		elif attribute == "capital":
@@ -152,8 +169,28 @@ class Nation:
 		elif attribute == "customreligion":
 			self.customreligion = value
 		elif attribute == "rcensus":
-			self.rcensus = value
+			self.rcensus = int(value)
 		elif attribute == "wcensus":
-			self.wcensus = value
+			self.wcensus = int(value)
 		elif attribute == "censusscore":
-			self.censusscore = value
+			self.censusscore = int(value)
+
+	def readAttribute(self, attribute, nation, autoset = True, debug = False):
+		baseUrl = "http://www.nationstates.net/cgi-bin/api.cgi?nation="
+		readUrl = baseUrl + "%s&q=%s" % (nation, attribute)
+		### Now do something to get the data
+		### ...
+		### xmlData is the xml data returned by the Nationstates API
+		br = Browser()
+		br.open(readUrl)
+		xmlData = br.response().read()
+		root = ET.fromstring(xmlData)
+		returnVal = root.find((attribute.upper())).text
+		if autoset == True:
+			self.setAttribute(attribute, returnVal)
+			if debug == True:
+				print "%s set" % attribute
+		else:
+			pass
+		return returnVal
+			
