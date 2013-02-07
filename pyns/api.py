@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
 from mechanize import Browser
-from bs4 import BeautifulSoup
 
 class ImproperFormattingException(Exception):
 	pass
@@ -250,7 +249,7 @@ class Nation:
 				returnVal = fr
 			elif attribute == "deaths":
 				d = Deaths()
-				d.wilderness = root.find("Lost in Wilderness").text
+				d.wilderness = root.find("Lost in Wilderness")
 				d.exposure = root.find("Exposure").text
 				d.capital = root.find("Capital Punishment").text
 				d.murder = root.find("Murder").text
