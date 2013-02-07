@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='PyNS',
-    version='0.1.1',
+    version='0.1.2',
     author='Vous',
     author_email='maarja@outlook.com',
     packages=['pyns'],
