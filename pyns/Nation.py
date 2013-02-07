@@ -3,6 +3,10 @@ from mechanize import Browser
 from bs4 import BeautifulSoup
 
 """This will be the main file for the Nations API Wrapper"""
+
+class ImproperFormattingException(Exception):
+	pass
+
 class Freedom:
 	def __init__(self):
 		self.civilrights = ""
@@ -179,17 +183,33 @@ class Nation:
 		elif attribute == "censusscore":
 			self.censusscore = int(value)
 		elif attribute == "govt":
-			assert type(value) == type(Government()), self.govt = value
+			if type(value) != type(Government()):
+				raise ImproperFormattingException()
+			else:
+				self.govt = value
 		elif attribute == "freedom":
-			assert type(value) == type(Freedom()), self.freedom = value
+			if type(value) != type(Freedom()):
+				raise ImproperFormattingException()
+			else:
+				self.freedom = value
 		elif attribute == "freedomscores":
-			assert type(value) == type(FreedomScores()), self.freedomscores = value
+			if type(value) != type(FreedomScores()):
+				raise ImproperFormattingException()
+			else:
+				self.freedomscores = value
 		elif attribute == "deaths":
-			assert type(value) == type(Deaths()), self.deaths = value
+			if type(value) != type(Deaths()):
+				raise ImproperFormattingException()
+			else:
+				self.deaths = value
 		
-	def readAttribute(self, attribute, nation, autoset = True, debug = False):
+	def readAttribute(self, attribute, autoset = True, debug = False):
 		"""This function takes an attribute and reads it from a link for a particular nation. Auto updating of the nation's value defaults to True, debugging defaults to False.
 		More complicated data to read, such as freedom scores, government budget breakdown, how the nation's freedom is and the breakdown of death rates have yet to be finished.""" 
+		nation = self.name
+		if self.name == "":
+			raise ImproperFormattingException
+
 		baseUrl = "http://www.nationstates.net/cgi-bin/api.cgi?nation="
 		readUrl = baseUrl + "%s&q=%s" % (nation, attribute)
 		### Now do something to get the data
@@ -202,7 +222,9 @@ class Nation:
 		complexAttributes = ["govt", "freedom", "freedomscores", "deaths"]
 
 		if attribute not in complexAttributes:
-			returnVal = root.find((attribute.upper())).text
+			a = root.find((attribute.upper()))
+			assert(type(a) != type(None))
+			returnVal = a.text
 		else:
 			if attribute == "govt":
 				g = Government()
@@ -230,7 +252,7 @@ class Nation:
 				fr.economy = root.find("ECONOMY").text
 				fr.politicalfreedom = root.find("POLITICALFREEDOM").text
 				returnVal = fr
-			elif attribute == "deaths"
+			elif attribute == "deaths":
 				d = Deaths()
 				d.wilderness = root.find("Lost in Wilderness").text
 				d.exposure = root.find("Exposure").text
