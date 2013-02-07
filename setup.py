@@ -10,6 +10,5 @@ setup(
     license='LICENSE.txt',
     description='A Wrapper for the Nation States API',
     long_description=open('README.txt').read(),
-    install_requires=["mechanize", "beautifulsoup4"
-    ],
+
 )

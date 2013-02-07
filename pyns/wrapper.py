@@ -2,8 +2,6 @@ import xml.etree.ElementTree as ET
 from mechanize import Browser
 from bs4 import BeautifulSoup
 
-"""This will be the main file for the Nations API Wrapper"""
-
 class ImproperFormattingException(Exception):
 	pass
 
