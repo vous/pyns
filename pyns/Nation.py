@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 from mechanize import Browser
+from bs4 import BeautifulSoup
 
 """This will be the main file for the Nations API Wrapper"""
 class Freedom:
@@ -177,7 +178,15 @@ class Nation:
 			self.wcensus = int(value)
 		elif attribute == "censusscore":
 			self.censusscore = int(value)
-
+		elif attribute == "govt":
+			assert type(value) == type(Government()), self.govt = value
+		elif attribute == "freedom":
+			assert type(value) == type(Freedom()), self.freedom = value
+		elif attribute == "freedomscores":
+			assert type(value) == type(FreedomScores()), self.freedomscores = value
+		elif attribute == "deaths":
+			assert type(value) == type(Deaths()), self.deaths = value
+		
 	def readAttribute(self, attribute, nation, autoset = True, debug = False):
 		"""This function takes an attribute and reads it from a link for a particular nation. Auto updating of the nation's value defaults to True, debugging defaults to False.
 		More complicated data to read, such as freedom scores, government budget breakdown, how the nation's freedom is and the breakdown of death rates have yet to be finished.""" 
@@ -190,7 +199,47 @@ class Nation:
 		br.open(readUrl)
 		xmlData = br.response().read()
 		root = ET.fromstring(xmlData)
-		returnVal = root.find((attribute.upper())).text
+		complexAttributes = ["govt", "freedom", "freedomscores", "deaths"]
+
+		if attribute not in complexAttributes:
+			returnVal = root.find((attribute.upper())).text
+		else:
+			if attribute == "govt":
+				g = Government()
+				g.environment = root.find("ENVIRONMENT").text
+				g.socialequality = root.find("SOCIALEQUALITY").text
+				g.education = root.find("EDUCATION").text
+				g.lawandorder = root.find("LAWANDORDER").text
+				g.administration = root.find("ADMINISTRATION").text
+				g.welfare = root.find("WELFARE").text
+				g.spirituality = root.find("SPIRITUALITY").text
+				g.defence = root.find("DEFENCE").text
+				g.publictransport = root.find("PUBLICTRANSPORT").text
+				g.healthcare = root.find("HEALTHCARE").text
+				g.commerce = root.find("COMMERCE").text
+				returnVal = g
+			elif attribute == "freedom":
+				fr = Freedom()
+				fr.civilrights = root.find("CIVILRIGHTS").text
+				fr.economy = root.find("ECONOMY").text
+				fr.politicalfreedom = root.find("POLITICALFREEDOM").text
+				returnVal = fr
+			elif attribute == "freedomscores":
+				fr = FreedomScores()
+				fr.civilrights = root.find("CIVILRIGHTS").text
+				fr.economy = root.find("ECONOMY").text
+				fr.politicalfreedom = root.find("POLITICALFREEDOM").text
+				returnVal = fr
+			elif attribute == "deaths"
+				d = Deaths()
+				d.wilderness = root.find("Lost in Wilderness").text
+				d.exposure = root.find("Exposure").text
+				d.capital = root.find("Capital Punishment").text
+				d.murder = root.find("Murder").text
+				d.heart = root.find("Heart Disease").text
+				d.age = root.find("Old Age").text
+				returnVal = d
+
 		if autoset == True:
 			self.setAttribute(attribute, returnVal)
 			if debug == True:
